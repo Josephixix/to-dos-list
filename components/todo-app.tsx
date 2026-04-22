@@ -191,7 +191,7 @@ export function TodoApp({ userId }: TodoAppProps) {
                 className="h-10 sm:h-9 w-full sm:w-auto rounded-xl bg-[#4946c8] px-4 sm:px-5 text-white hover:bg-[#4946c8]/90"
               >
                 <Plus className="size-4 mr-1" />
-                Add
+                Addd
               </Button>
             </div>
 
