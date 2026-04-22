@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Check, LoaderCircle, Plus, Trash2, TriangleAlert } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -28,6 +28,8 @@ export function TodoApp({ userId }: TodoAppProps) {
   const [saveState, setSaveState] = useState<"idle" | "saving" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
     let isActive = true;
 
@@ -40,26 +42,20 @@ export function TodoApp({ userId }: TodoAppProps) {
           throw new Error(data.error ?? "Failed to load tasks.");
         }
 
-        if (!isActive) {
-          return;
-        }
+        if (!isActive) return;
 
         setTasks(data.tasks);
         setErrorMessage(null);
         setSaveState("idle");
       } catch (error) {
-        if (!isActive) {
-          return;
-        }
+        if (!isActive) return;
 
         setSaveState("error");
         setErrorMessage(
-          error instanceof Error ? error.message : "Failed to load tasks.",
+          error instanceof Error ? error.message : "Failed to load tasks."
         );
       } finally {
-        if (isActive) {
-          setIsLoading(false);
-        }
+        if (isActive) setIsLoading(false);
       }
     }
 
@@ -69,6 +65,11 @@ export function TodoApp({ userId }: TodoAppProps) {
       isActive = false;
     };
   }, [userId]);
+
+  // 🔥 Focus input on load
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   async function saveTasks(nextTasks: Task[]) {
     setTasks(nextTasks);
@@ -93,7 +94,9 @@ export function TodoApp({ userId }: TodoAppProps) {
       setSaveState("idle");
     } catch (error) {
       setSaveState("error");
-      setErrorMessage(error instanceof Error ? error.message : "Failed to save tasks.");
+      setErrorMessage(
+        error instanceof Error ? error.message : "Failed to save tasks."
+      );
     }
   }
 
@@ -101,17 +104,21 @@ export function TodoApp({ userId }: TodoAppProps) {
     const title = value.trim();
 
     if (!title) {
+      inputRef.current?.focus();
       return;
     }
 
     const nextTasks = [{ id: Date.now(), title, done: false }, ...tasks];
     setValue("");
     await saveTasks(nextTasks);
+
+    // 🔥 Keep focus after adding
+    inputRef.current?.focus();
   }
 
   async function toggleTask(id: number) {
     const nextTasks = tasks.map((task) =>
-      task.id === id ? { ...task, done: !task.done } : task,
+      task.id === id ? { ...task, done: !task.done } : task
     );
 
     await saveTasks(nextTasks);
@@ -120,117 +127,118 @@ export function TodoApp({ userId }: TodoAppProps) {
   async function removeTask(id: number) {
     const nextTasks = tasks.filter((task) => task.id !== id);
     await saveTasks(nextTasks);
+
+    // optional: keep typing flow after delete
+    inputRef.current?.focus();
   }
 
   const completedCount = tasks.filter((task) => task.done).length;
 
   return (
-    <section className="mx-auto w-full max-w-5xl px-4 pb-16 sm:px-6">
-      <div className="overflow-hidden rounded-[2rem] border border-stone-200/80 bg-white/90 shadow-[0_30px_80px_-40px_rgba(41,37,36,0.45)] backdrop-blur">
-        <div className="border-b border-stone-200/80 bg-stone-950 px-6 py-8 text-stone-50 sm:px-8">
-          <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-            <div className="space-y-2">
-              <p className="text-sm font-medium tracking-[0.24em] text-amber-200 uppercase">
-                Your dashboard
-              </p>
-              <h2 className="text-3xl font-semibold sm:text-4xl">
-                Keep today under control.
-              </h2>
-              <p className="max-w-2xl text-sm text-stone-300 sm:text-base">
-                Add tasks, mark them complete, and keep your next step visible.
+    <section className="mx-auto w-full max-w-xl px-3 sm:px-6 pt-14 sm:pt-25 pb-12 sm:pb-16">
+      <div className="overflow-hidden rounded-3xl border border-stone-200/80 bg-white/90">
+
+        {/* HEADER */}
+        <div className="border-b border-stone-200/80 bg-stone-950 px-4 sm:px-8 py-6 sm:py-4 text-stone-50">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+
+            <div className="space-y-1">
+              <p className="text-xs sm:text-sm font-bold tracking-[0.2em] uppercase text-white">
+                welcome
               </p>
             </div>
 
-            <div className="space-y-2 text-right">
-              <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-stone-200">
+            <div className="space-y-1 sm:text-right">
+              <div className="rounded-xl sm:rounded-lg border border-white/10 bg-white/5 px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-sm text-stone-200">
                 {completedCount} of {tasks.length} tasks complete
               </div>
-              <p className="text-xs text-stone-300">
+
+              <p className="text-[11px] sm:text-xs text-stone-300">
                 {isLoading && "Loading your tasks..."}
-                {!isLoading && saveState === "saving" && "Saving to Firebase..."}
-                {!isLoading && saveState === "idle" && "Your tasks are being stored in Firebase"}
-                {!isLoading && saveState === "error" && "Firebase save failed"}
+                {!isLoading && saveState === "saving" && "Saving..."}
+                {!isLoading && saveState === "error" && "Save failed"}
               </p>
             </div>
           </div>
         </div>
 
-        <div className="grid gap-8 px-6 py-8 sm:px-8 lg:grid-cols-[1.2fr_0.8fr]">
+        {/* CONTENT */}
+        <div className="grid gap-6 px-4 sm:px-8 py-6 sm:py-8 lg:grid-cols-[1.2fr_0.8fr]">
+
           <div className="space-y-4">
-            {errorMessage ? (
-              <div className="flex items-start gap-3 rounded-3xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-                <TriangleAlert className="mt-0.5 size-4 shrink-0" />
+
+            {errorMessage && (
+              <div className="flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs sm:text-sm text-red-700">
+                <TriangleAlert className="size-4 mt-0.5" />
                 <span>{errorMessage}</span>
               </div>
-            ) : null}
+            )}
 
-            <div className="flex flex-col gap-3 rounded-3xl border border-stone-200 bg-stone-50 p-4 sm:flex-row">
+            {/* INPUT */}
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 rounded-xl border border-stone-200 bg-stone-50 p-3 sm:p-4">
               <input
+                ref={inputRef}
                 value={value}
-                onChange={(event) => setValue(event.target.value)}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter") {
-                    void addTask();
-                  }
-                }}
+                onChange={(e) => setValue(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && addTask()}
                 placeholder="Add a new task..."
-                className="h-12 flex-1 rounded-2xl border border-stone-200 bg-white px-4 text-sm outline-none ring-0 placeholder:text-stone-400 focus:border-stone-400"
+                className="h-10 sm:h-9 flex-1 rounded-xl border border-stone-200 bg-white px-3 sm:px-4 text-sm outline-none placeholder:text-stone-400 focus:border-stone-400"
               />
+
               <Button
-                size="lg"
-                onClick={() => void addTask()}
-                className="h-12 rounded-2xl bg-amber-400 px-5 text-stone-950 hover:bg-amber-300"
+                onClick={() => addTask()}
                 disabled={isLoading}
+                className="h-10 sm:h-9 w-full sm:w-auto rounded-xl bg-[#4946c8] px-4 sm:px-5 text-white hover:bg-[#4946c8]/90"
               >
-                <Plus className="size-4" />
-                Add task
+                <Plus className="size-4 mr-1" />
+                Add
               </Button>
             </div>
 
-            <div className="space-y-3">
+            {/* TASK LIST */}
+            <div className="space-y-2">
               {isLoading ? (
-                <div className="flex items-center gap-3 rounded-3xl border border-stone-200 bg-white p-4 text-stone-500 shadow-sm">
-                  <LoaderCircle className="size-5 animate-spin" />
-                  Loading your task list...
+                <div className="flex items-center gap-2 rounded-lg border border-stone-200 bg-white p-3 text-sm text-stone-500">
+                  <LoaderCircle className="size-4 animate-spin" />
+                  Loading tasks...
                 </div>
               ) : (
                 tasks.map((task) => (
                   <div
                     key={task.id}
-                    className="flex items-center gap-3 rounded-3xl border border-stone-200 bg-white p-4 shadow-sm"
+                    className="flex items-center gap-3 rounded-xl border border-stone-200 bg-white p-3 sm:p-4"
                   >
                     <button
-                      type="button"
-                      onClick={() => void toggleTask(task.id)}
-                      className={`flex size-11 shrink-0 items-center justify-center rounded-2xl border transition ${
+                      onClick={() => toggleTask(task.id)}
+                      className={`flex size-6 sm:size-5 items-center justify-center rounded-md border ${
                         task.done
-                          ? "border-emerald-600 bg-emerald-600 text-white"
-                          : "border-stone-300 bg-stone-50 text-stone-400"
+                          ? "bg-emerald-600 border-emerald-600 text-white"
+                          : "bg-stone-50 border-stone-300 text-stone-400"
                       }`}
-                      aria-label={`Mark ${task.title} as ${task.done ? "incomplete" : "complete"}`}
                     >
-                      <Check className="size-5" />
+                      <Check className="size-3" />
                     </button>
 
-                    <div className="min-w-0 flex-1">
+                    <div className="flex-1 min-w-0">
                       <p
-                        className={`text-base font-medium ${
-                          task.done ? "text-stone-400 line-through" : "text-stone-900"
+                        className={`text-sm sm:text-base font-medium ${
+                          task.done
+                            ? "line-through text-stone-400"
+                            : "text-stone-900"
                         }`}
                       >
                         {task.title}
                       </p>
-                      <p className="text-sm text-stone-500">
-                        {task.done ? "Finished" : "Still in progress"}
+                      <p className="text-xs sm:text-sm text-stone-500">
+                        {task.done ? "Finished" : "In progress"}
                       </p>
                     </div>
 
                     <Button
                       variant="ghost"
                       size="icon"
-                      onClick={() => void removeTask(task.id)}
-                      className="rounded-2xl text-stone-500 hover:bg-stone-100 hover:text-stone-900"
-                      aria-label={`Delete ${task.title}`}
+                      onClick={() => removeTask(task.id)}
+                      className="size-8 sm:size-9 rounded-lg text-stone-500 hover:bg-stone-100"
                     >
                       <Trash2 className="size-4" />
                     </Button>
@@ -239,31 +247,6 @@ export function TodoApp({ userId }: TodoAppProps) {
               )}
             </div>
           </div>
-
-          <aside className="space-y-4 rounded-[1.75rem] bg-stone-100 p-5">
-            <div className="rounded-[1.5rem] bg-white p-5 shadow-sm">
-              <p className="text-sm font-medium tracking-[0.2em] text-stone-500 uppercase">
-                Storage
-              </p>
-              <h3 className="mt-2 text-2xl font-semibold text-stone-900">
-                Reliable saves through the server.
-              </h3>
-              <p className="mt-3 text-sm leading-6 text-stone-600">
-                Clerk protects the request, then the server writes your tasks to
-                Firebase using the admin SDK.
-              </p>
-            </div>
-
-            <div className="rounded-[1.5rem] bg-amber-300 p-5 text-stone-950">
-              <p className="text-sm font-medium tracking-[0.2em] uppercase">
-                Good sign
-              </p>
-              <p className="mt-3 text-sm leading-6">
-                If the status says your tasks are being stored in Firebase, logout
-                and sign back in to confirm they come back.
-              </p>
-            </div>
-          </aside>
         </div>
       </div>
     </section>

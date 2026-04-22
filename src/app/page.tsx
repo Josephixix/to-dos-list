@@ -11,10 +11,11 @@ export default async function Home() {
   }
 
   return (
-    <main className="relative flex min-h-screen w-full items-center justify-center px-4 pb-20 pt-12 sm:px-6">
+    <main className="relative flex min-h-screen w-full items-center 
+    justify-center px-4 pb-20 pt-12 sm:px-6 ">
 
-      {/* LEFT - TOP (UNCHANGED) */}
-      <div className="hidden lg:block absolute left-10 top-10 space-y-4">
+      {/* RIGHT -img */}
+      <div className="hidden lg:block absolute left-10 lg:left-20 top-10 space-y-4">
         <img
           src="/img.jpg"
           alt="preview 1"
@@ -23,12 +24,12 @@ export default async function Home() {
         <img
           src="/img1.jpg"
           alt="preview 2"
-          className="w-28 h-28 rounded-xl object-cover"
+          className="w-28 h-28 rounded-xl object-cover "
         />
       </div>
 
-      {/* LEFT - MIDDLE (IMG 3 MOVED UP) */}
-      <div className="hidden lg:block absolute left-10 top-1/2 -translate-y-1/2">
+      {/* LEFT -img */}
+      <div className="hidden lg:block absolute left-10 top-1/2 -translate-y-1/2 lg:left-20">
         <img
           src="/img2.jpg"
           alt="preview 3"
@@ -51,7 +52,7 @@ export default async function Home() {
       </div>
 
       {/* CENTER CONTENT */}
-      <section className="flex flex-col items-center text-center gap-6 max-w-2xl mx-auto z-10">
+      <section className="flex flex-col items-center text-center gap-6 max-w-2xl mx-auto z-10 ">
 
         {/* Headline */}
         <h1 className="font-extrabold tracking-tight text-2xl md:text-5xl lg:text-6xl text-stone-950 leading-tight">
@@ -71,8 +72,9 @@ export default async function Home() {
 
         {/* Subheadline */}
         <p className="text-sm lg:text-xl text-stone-500 leading-relaxed max-w-xl">
-          To-dos turns your scattered to-do list into a calm, focused workspace.
-          Simple to start in seconds. Powerful to run your whole life.
+     To-dos turns your scattered to-do list into a calm, 
+     focused workspace. Simple enough to start in seconds. 
+     Powerful enough to run your whole life.
         </p>
 
         {/* CTA */}
