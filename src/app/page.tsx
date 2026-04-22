@@ -55,7 +55,7 @@ export default async function Home() {
       <section className="flex flex-col items-center text-center gap-6 max-w-2xl mx-auto z-10 ">
 
         {/* Headline */}
-        <h1 className="font-extrabold tracking-tight text-2xl md:text-5xl lg:text-6xl text-stone-950 leading-tight">
+        <h1 className="font-extrabold tracking-tight text-3xl md:text-5xl lg:text-6xl text-stone-950 leading-tight">
           A simple and organized <br />
           to-do{" "}
           <span className="inline-flex items-center gap-2">
