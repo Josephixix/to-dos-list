@@ -200,7 +200,7 @@ export function TodoApp({ userId }: TodoAppProps) {
               {isLoading ? (
                 <div className="flex items-center gap-2 rounded-lg border border-stone-200 bg-white p-3 text-sm text-stone-500">
                   <LoaderCircle className="size-4 animate-spin" />
-                  Loading tasks...
+                  Loading tasks..
                 </div>
               ) : (
                 tasks.map((task) => (
