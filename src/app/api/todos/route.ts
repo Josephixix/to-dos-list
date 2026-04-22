@@ -2,6 +2,8 @@ import { auth } from "@clerk/nextjs/server";
 
 import { getFirebaseAdminDatabase } from "@/lib/firebase-admin";
 
+export const runtime = "nodejs";
+
 type Task = {
   id: number;
   title: string;

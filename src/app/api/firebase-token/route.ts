@@ -2,6 +2,8 @@ import { auth } from "@clerk/nextjs/server";
 
 import { createFirebaseCustomToken } from "@/lib/firebase-admin";
 
+export const runtime = "nodejs";
+
 export async function GET() {
   const { userId } = await auth();
 
