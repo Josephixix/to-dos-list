@@ -31,7 +31,7 @@ export function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 group" onClick={() => setMenuOpen(false)}>
             <div className="flex items-center justify-center rounded-[20px] border-black/10 bg-[#7B77DE] px-5 py-1">
-              <span className="text-sm font-extrabold tracking-tight text-black">
+              <span className="text-sm font-extrabold tracking-tight text-white">
                 TO-DOS
               </span>
             </div>

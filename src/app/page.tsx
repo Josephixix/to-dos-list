@@ -14,45 +14,45 @@ export default async function Home() {
     <main className="relative flex min-h-screen w-full items-center 
     justify-center px-4 pb-20 pt-12 sm:px-6 ">
 
-      {/* RIGHT -img */}
-      <div className="hidden lg:block absolute left-10 lg:left-20 top-10 space-y-4">
+      {/* LEFT TOP - 2 stacked imgs */}
+      <div className="hidden lg:flex absolute left-6 xl:left-12 top-10 flex-col gap-4">
         <img
-          src="/img.jpg"
+          src="/img1.jpg"
           alt="preview 1"
-          className="w-28 h-28 rounded-xl object-cover"
+          className="w-40 h-40 xl:w-52 xl:h-52 rounded-2xl object-cover"
         />
         <img
           src="/img1.jpg"
           alt="preview 2"
-          className="w-28 h-28 rounded-xl object-cover "
+          className="w-40 h-40 xl:w-52 xl:h-52 rounded-2xl object-cover"
         />
       </div>
 
-      {/* LEFT -img */}
-      <div className="hidden lg:block absolute left-10 top-1/2 -translate-y-1/2 lg:left-20">
+      {/* LEFT MIDDLE - single img */}
+      <div className="hidden lg:block absolute left-6 xl:left-12 top-1/2 -translate-y-1/2">
         <img
           src="/img2.jpg"
           alt="preview 3"
-          className="w-28 h-28 rounded-xl object-cover"
+          className="w-40 h-40 xl:w-52 xl:h-52 rounded-2xl object-cover"
         />
       </div>
 
       {/* RIGHT - BOTTOM STACK */}
-      <div className="hidden lg:block absolute right-10 bottom-10 space-y-4">
+      <div className="hidden lg:flex absolute right-6 xl:right-12 bottom-10 flex-col gap-4">
         <img
           src="/img5.jpg"
           alt="preview 5"
-          className="w-28 h-28 rounded-xl object-cover"
+          className="w-40 h-40 xl:w-52 xl:h-52 rounded-2xl object-cover"
         />
         <img
           src="/img6.jpg"
           alt="preview 4"
-          className="w-28 h-28 rounded-xl object-cover"
+          className="w-40 h-40 xl:w-52 xl:h-52 rounded-2xl object-cover"
         />
       </div>
 
       {/* CENTER CONTENT */}
-      <section className="flex flex-col items-center text-center gap-6 max-w-2xl mx-auto z-10 ">
+      <section className="flex flex-col items-center text-center gap-6 max-w-2xl mx-auto z-10">
 
         {/* Headline */}
         <h1 className="font-extrabold tracking-tight text-3xl md:text-5xl lg:text-6xl text-stone-950 leading-tight">
@@ -72,9 +72,9 @@ export default async function Home() {
 
         {/* Subheadline */}
         <p className="text-sm lg:text-xl text-stone-500 leading-relaxed max-w-xl">
-     To-dos turns your scattered to-do list into a calm, 
-     focused workspace. Simple enough to start in seconds. 
-     Powerful enough to run your whole life.
+          To-dos turns your scattered to-do list into a calm, 
+          focused workspace. Simple enough to start in seconds. 
+          Powerful enough to run your whole life.
         </p>
 
         {/* CTA */}
@@ -82,7 +82,7 @@ export default async function Home() {
           <SignUpButton mode="modal">
             <Button
               size="lg"
-              className="rounded-full bg-stone-950 px-7 text-amber-50 hover:bg-stone-800 text-sm font-semibold"
+              className="rounded-full bg-black px-7 text-white hover:bg-stone-800 text-sm font-semibold"
             >
               Get started free
             </Button>
