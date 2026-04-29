@@ -18,7 +18,7 @@ export function LandingPage() {
         <motion.img
           src="/img1.jpg"
           alt="preview 2"
-          className="w-40 h-40 xl:w-52 xl:h-52 rounded-2xl object-cover shadow-sm"
+          className="w-40 h-40 xl:w-52 xl:h-52 rounded-2xl object-cover"
           whileHover={{ scale: 1.05, rotate: -2 }}
           transition={{ type: "spring", stiffness: 300 }}
         />
@@ -34,7 +34,7 @@ export function LandingPage() {
         <motion.img
           src="/img2.jpg"
           alt="preview 3"
-          className="w-40 h-40 xl:w-52 xl:h-52 rounded-2xl object-cover shadow-sm"
+          className="w-40 h-40 xl:w-52 xl:h-52 rounded-2xl object-cover"
           whileHover={{ scale: 1.05, rotate: 2 }}
           transition={{ type: "spring", stiffness: 300 }}
         />
@@ -50,14 +50,14 @@ export function LandingPage() {
         <motion.img
           src="/img5.jpg"
           alt="preview 5"
-          className="w-40 h-40 xl:w-52 xl:h-52 rounded-2xl object-cover shadow-sm"
+          className="w-40 h-40 xl:w-52 xl:h-52 rounded-2xl object-cover"
           whileHover={{ scale: 1.05, rotate: 2 }}
           transition={{ type: "spring", stiffness: 300 }}
         />
         <motion.img
           src="/img6.jpg"
           alt="preview 4"
-          className="w-40 h-40 xl:w-52 xl:h-52 rounded-2xl object-cover shadow-sm"
+          className="w-40 h-40 xl:w-52 xl:h-52 rounded-2xl object-cover"
           whileHover={{ scale: 1.05, rotate: -2 }}
           transition={{ type: "spring", stiffness: 300 }}
         />
